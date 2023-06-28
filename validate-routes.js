@@ -1,5 +1,5 @@
 const path = require('node:path');
-const fs = require('node:fs');
+const fs = require('node:fs').promises;
 
 //es la ruta es absoluta?
 function isAbsolute(route) {
@@ -11,35 +11,28 @@ function isAbsolute(route) {
 function convertToAbsolute(relativePath) {
   const actualDir = process.cwd(); // Obtener el directorio actual
   const absolutePath = path.resolve(actualDir, relativePath); //conversión de ruta relativa a absoluta
-return absolutePath;
+  const replacePath= absolutePath.replace(/\\/g,'/'); //reemplazar \
+return replacePath;
 }
-console.log(convertToAbsolute('./prueba/readmeprueba.md'));
+//console.log(convertToAbsolute('./prueba/readmeprueba.md'));
 
-/*function toAbsolute(currentPath) {
-  let absolutePath = '';
-
-  if (path.isAbsolute(currentPath) && isExist(currentPath)) {
-      absolutePath = currentPath.replace(/\\/g,'/');
-  } else if (isExist(currentPath)){
-      absolutePath = path.resolve(currentPath).replace(/\\/g,'/');
-  } else {
-    absolutePath = "tu ruta no existe";
-  }
-  return absolutePath;
-}
-console.log(toAbsolute('./prueba/readmeprueba.md'));*/
-
-/*existe la ruta?
+// la ruta existe?
 function isExist(route) {
-  return fs.promises.stat(route)
-    .then(() => true)
-    .catch(() => false);
+  return fs.access(route)
+    .then(() => {
+   console.log('La ruta existe');
+    return true;
+  })
+    .catch(() => {
+   console.log('La ruta no existe');
+    return false;
+  });
 }
-/*function isExist(route) {
-  return fs.existsSync(route)
-}*/
+console.log(isExist('./prueba/readmeprueba.md'));
+
 
 module.exports = {
 isAbsolute,
 convertToAbsolute,
+isExist,
 }
