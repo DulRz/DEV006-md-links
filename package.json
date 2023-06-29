@@ -24,6 +24,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/babel src --out-dir dist/"
   },
+  "bin": {
+    "md-links": "./cli.js"
+  },
   "keywords": [
     "laboratoria",
     "md-links"
